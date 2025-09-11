@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ผู้ดูแลระบบ</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-white">
+  <div class="d-flex">
+    <aside id="sidebar" class="sidebar p-3 border-end">
+      <h5 class="mb-4 fw-bold"><i class="bi bi-gear me-2"></i>ผู้ดูแลระบบ</h5>
+      <nav class="nav flex-column gap-2">
+        <a class="nav-link px-3 py-2 rounded hoverable" href="pvc.html"><i class="bi bi-border-width me-2"></i>คำนวณฉากกั้นแอร์</a>
+        <a class="nav-link px-3 py-2 rounded hoverable" href="woodblind.html"><i class="bi bi-window-split me-2"></i>คำนวณมู่ลี่ไม้</a>
+        <a class="nav-link px-3 py-2 rounded hoverable" href="index.html"><i class="bi bi-house me-2"></i>กลับหน้าแรก</a>
+      </nav>
+    </aside>
+
+    <main class="flex-grow-1 p-4">
+      <div class="container" id="loginBox">
+        <div class="row justify-content-center">
+          <div class="col-md-5">
+            <div class="card shadow-sm border-0">
+              <div class="card-body p-4">
+                <h3 class="fw-bold mb-3">เข้าสู่ระบบผู้ดูแล</h3>
+                <div class="mb-3">
+                  <label class="form-label">Username</label>
+                  <input id="u" class="form-control" placeholder="admin">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Password</label>
+                  <input id="p" type="password" class="form-control" placeholder="14506">
+                </div>
+                <button id="loginBtn" class="btn btn-primary w-100">เข้าสู่ระบบ</button>
+                <div id="loginMsg" class="text-danger small mt-2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container d-none" id="adminPanel">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h3 class="fw-bold">ปรับราคาสินค้า</h3>
+          <button id="logoutBtn" class="btn btn-outline-danger btn-sm"><i class="bi bi-box-arrow-right me-1"></i>ออกจากระบบ</button>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="card h-100 shadow-sm border-0">
+              <div class="card-body">
+                <h5 class="fw-bold mb-3">ฉากกั้นแอร์ (เพิ่ม/ลด/ปรับ)</h5>
+                <table class="table align-middle" id="pvcTable">
+                  <thead class="table-light"><tr><th>ชื่อ</th><th style="width:160px">ราคา</th><th style="width:120px"></th></tr></thead>
+                  <tbody></tbody>
+                </table>
+                <button class="btn btn-outline-primary" id="addPVC"><i class="bi bi-plus-circle me-1"></i>เพิ่มรายการ</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card h-100 shadow-sm border-0">
+              <div class="card-body">
+                <h5 class="fw-bold mb-3">มู่ลี่ไม้ (เพิ่ม/ลด/ปรับ)</h5>
+                <table class="table align-middle" id="wbTable">
+                  <thead class="table-light"><tr><th>ชื่อ</th><th style="width:160px">ราคา</th><th style="width:120px"></th></tr></thead>
+                  <tbody></tbody>
+                </table>
+                <button class="btn btn-outline-primary" id="addWB"><i class="bi bi-plus-circle me-1"></i>เพิ่มรายการ</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-end mt-3">
+          <button id="saveAll" class="btn btn-success btn-lg"><i class="bi bi-save2 me-1"></i>บันทึกการเปลี่ยนแปลง</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/prices.js"></script>
+  <script>
+    const loginBox = document.getElementById('loginBox');
+    const adminPanel = document.getElementById('adminPanel');
+    const loginState = localStorage.getItem('adminSession') === '1';
+    function showPanel(){ loginBox.classList.add('d-none'); adminPanel.classList.remove('d-none'); }
+    function showLogin(){ loginBox.classList.remove('d-none'); adminPanel.classList.add('d-none'); }
+    if (loginState) showPanel();
+
+    document.getElementById('loginBtn').addEventListener('click', ()=>{
+      const u = document.getElementById('u').value.trim();
+      const p = document.getElementById('p').value.trim();
+      if (u==='admin' && p==='14506'){ localStorage.setItem('adminSession','1'); showPanel(); }
+      else document.getElementById('loginMsg').textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+    });
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{ localStorage.removeItem('adminSession'); showLogin(); });
+
+    const pvcBody = document.querySelector('#pvcTable tbody');
+    const wbBody  = document.querySelector('#wbTable tbody');
+    function rowTemplate(name,value){
+      return `<tr>
+        <td><input class="form-control name" value="${name||''}" placeholder="ชื่อราคา"></td>
+        <td><input type="number" class="form-control value" value="${value||0}"></td>
+        <td class="text-end"><button class="btn btn-outline-danger btn-sm del"><i class="bi bi-trash"></i></button></td>
+      </tr>`;
+    }
+    function reload(){
+      const { pvcPrices, woodBlindPrices } = getAllPrices();
+      pvcBody.innerHTML = pvcPrices.map(p=>rowTemplate(p.label,p.value)).join('');
+      wbBody.innerHTML  = woodBlindPrices.map(p=>rowTemplate(p.label,p.value)).join('');
+      pvcBody.querySelectorAll('.del').forEach(btn=>btn.addEventListener('click',e=>{ e.target.closest('tr').remove(); }));
+      wbBody.querySelectorAll('.del').forEach(btn=>btn.addEventListener('click',e=>{ e.target.closest('tr').remove(); }));
+    }
+    reload();
+
+    document.getElementById('addPVC').addEventListener('click',()=>{ pvcBody.insertAdjacentHTML('beforeend',rowTemplate('ชื่อราคาใหม่',0)); reload(); });
+    document.getElementById('addWB').addEventListener('click',()=>{ wbBody.insertAdjacentHTML('beforeend',rowTemplate('ชื่อราคาใหม่',0)); reload(); });
+
+    document.getElementById('saveAll').addEventListener('click',()=>{
+      const pvc = [...pvcBody.querySelectorAll('tr')].map(tr=>({ label: tr.querySelector('.name').value||'-', value: parseFloat(tr.querySelector('.value').value)||0 }));
+      const wb  = [...wbBody.querySelectorAll('tr')].map(tr=>({ label: tr.querySelector('.name').value||'-', value: parseFloat(tr.querySelector('.value').value)||0 }));
+      saveAllPrices({ pvcPrices: pvc, woodBlindPrices: wb });
+      alert('บันทึกแล้ว');
+    });
+  </script>
+</body>
+</html>
