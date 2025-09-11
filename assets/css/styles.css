@@ -1,0 +1,19 @@
+:root{
+  --pc-primary: #0d6efd;
+  --pc-bg: #ffffff;
+}
+body{ background:#fff; }
+
+/* Sidebar */
+.sidebar{
+  width: 260px; min-height: 100vh; background: #fafafa;
+  position: sticky; top:0; display:flex; flex-direction:column;
+}
+.nav-link{ color:#333; }
+.nav-link.active{ background: rgba(13,110,253,.1); color: var(--pc-primary); font-weight:600; }
+.hoverable{ transition: transform .05s ease, background .2s; }
+.hoverable:hover{ background:#f0f5ff; transform: translateX(2px); }
+
+/* Cards & buttons */
+.card{ border-radius: 1rem; }
+.btn{ border-radius: .8rem; }
