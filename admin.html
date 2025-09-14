@@ -1,1 +1,69 @@
-<!doctype html><html><head><meta charset='utf-8'><title>Admin</title></head><body><h1>Admin Page</h1></body></html>
+<!doctype html><html lang="th"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin — เว็บคำนวนราคา</title>
+<link href="./css/style.css" rel="stylesheet">
+</head><body class="theme">
+<header class="topbar"><div class="wrap">
+  <div class="brand">เว็บคำนวนราคา • Admin</div>
+  <div class="right">
+    <button id="btnSignOut" class="btn ghost">ออกจากระบบ</button>
+  </div>
+</div></header>
+
+<main class="wrap" style="margin-top:18px">
+  <section id="loginBox" class="card" style="max-width:460px;display:none">
+    <h2>เข้าสู่ระบบแอดมิน</h2>
+    <div class="grid2">
+      <div><label>ผู้ใช้</label><input id="loginUser" placeholder="admin" value="admin"></div>
+      <div><label>รหัสผ่าน</label><input id="loginPass" type="password" placeholder="14506"></div>
+    </div>
+    <div class="row actions">
+      <button id="btnLogin" class="btn">เข้าสู่ระบบ</button>
+      <span id="loginMsg" class="muted"></span>
+    </div>
+  </section>
+
+  <section id="adminBox" class="card" style="display:none">
+    <h2>ตั้งค่าไซต์</h2>
+    <div class="grid3">
+      <div><label>กว้างขั้นต่ำ (ม.)</label><input id="minWidth" type="number" step="0.01"></div>
+      <div><label>สูงขั้นต่ำ (ม.)</label><input id="minHeight" type="number" step="0.01"></div>
+      <div><label>ตัวคูณสูตร</label><input id="multiplier" type="number" step="0.01"></div>
+      <div><label>VAT (%)</label><input id="vatPct" type="number" step="0.01"></div>
+      <div><label>โน้ตท้ายบิล</label><input id="invoiceNote" placeholder="เช่น ราคานี้ยังไม่รวมค่าติดตั้ง..."></div>
+    </div>
+
+    <h3 style="margin-top:18px">ช่วงปัดความสูง</h3>
+    <div id="heightRows" class="table hdr-4">
+      <div class="hdr">> Min</div><div class="hdr">≤ Max</div><div class="hdr">ใช้สูง</div><div></div>
+    </div>
+    <div class="actions">
+      <button id="addHeight" class="btn ghost">+ เพิ่มช่วง</button>
+    </div>
+
+    <h3 style="margin-top:18px">แพคเกจราคา/ตร.ม.</h3>
+    <div id="priceRows" class="table hdr-3">
+      <div class="hdr">ชื่อแพคเกจ</div><div class="hdr">ราคา</div><div></div>
+    </div>
+    <div class="actions">
+      <button id="addPrice" class="btn ghost">+ เพิ่มแพคเกจ</button>
+    </div>
+
+    <h3 style="margin-top:18px">สินค้า (ออปชัน “การเปิด”)</h3>
+    <div id="openerRows" class="table hdr-2">
+      <div class="hdr">ตัวเลือก</div><div></div>
+    </div>
+    <div class="actions">
+      <button id="addOpener" class="btn ghost">+ เพิ่มตัวเลือก</button>
+    </div>
+
+    <div class="row actions" style="margin-top:22px">
+      <button id="btnSave" class="btn">บันทึกทั้งหมด</button>
+      <span id="saveMsg" class="muted"></span>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="./js/firebase-init.js"></script>
+<script type="module" src="./js/admin.js"></script>
+</body></html>
